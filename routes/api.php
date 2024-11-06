@@ -8,4 +8,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/mikrotik/interfaces', [MikrotikController::class, 'getInterfaces']);
+Route::get('/mikrotik/interfaces', [MikrotikController::class, 'getRouterData']);
+
+Route::get('/mikrotik/users', [MikrotikController::class, 'getUsers']);

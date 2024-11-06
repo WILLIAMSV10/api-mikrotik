@@ -2,28 +2,26 @@
 
 namespace App\Services;
 
+use RouterOS\Client;
+use RouterOS\Query;
+
+
 class MikrotikService
 {
     protected $client;
 
     public function __construct()
     {
-        $this->client = new MikrotikClient(
-            env('MIKROTIK_HOST'),
-            env('MIKROTIK_USER'),
-            env('MIKROTIK_PASSWORD')
-        );
-        $this->client->connect();
+        $this->client = new Client([
+            'host' => env('MIKROTIK_HOST'),
+            'user' => env('MIKROTIK_USER'),
+            'pass' => env('MIKROTIK_PASSWORD'),
+        ]);
     }
 
-    public function getInterfaces()
+    public function getData($query)
     {
-        // $this->client->write('/interface/print');
-        // return $this->client->read();
-    }
-
-    public function __destruct()
-    {
-        $this->client->close();
+        $query = new Query($query);
+        return $this->client->query($query)->read();
     }
 }
