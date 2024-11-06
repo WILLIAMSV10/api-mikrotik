@@ -2,7 +2,7 @@
 
 :root {
     --color-default: #12144E;
-    --color-second: #2596be;
+    --color-second: #E83845;
     --color-white: #fff;
     --color-body: #e4e9f7;
     --color-light: #e0e0e0;
@@ -368,8 +368,7 @@ main {
 
 .content {
     background-color: var(--color-second);
-    min-height: 50vh;
-    border-radius: 15px;
+    min-height: 30vh;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -389,8 +388,7 @@ main {
 }
 
 .container .text p {
-    font-size: clamp(16px, 2vw, 24px);
-    font-weight: 700;
+    font-size: clamp(16px, 1vw, 24px);
     color: white;
     /* margin-bottom: 20px; */
 }
