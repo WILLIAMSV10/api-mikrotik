@@ -18,8 +18,8 @@ class MikrotikService
 
     public function getInterfaces()
     {
-        $this->client->write('/interface/print');
-        return $this->client->read();
+        // $this->client->write('/interface/print');
+        // return $this->client->read();
     }
 
     public function __destruct()

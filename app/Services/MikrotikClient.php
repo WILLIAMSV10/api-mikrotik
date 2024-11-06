@@ -36,12 +36,23 @@ class MikrotikClient
             throw new \Exception("El desafío no es válido: $challenge");
         }
 
-        $this->close();
+        $challenge_bin = hex2bin($challenge);
+
+        if ($challenge_bin === false) {
+            throw new \Exception("Challenge no es un valor hexadecimal válido.");
+        }
+
+        // Combinar el byte cero + contraseña + desafío en binario
+        $combined = $this->password . $challenge_bin;
 
         // Calculate hashed password
-        $hash = md5(chr(0) . $this->password . pack('H*', $challenge));
+        // Calcular el hash MD5 de la combinación
+        $hash = md5($combined);
+        // $hash = md5(chr(0) . $this->password . $challenge);
 
-        $this->openConnection();
+        if (!preg_match('/^[0-9a-fA-F]+$/', $hash)) {
+            throw new \Exception("El hash no es válido: $hash");
+        }
 
         // Send login with hashed password
         $this->write('/login', [
@@ -50,6 +61,7 @@ class MikrotikClient
         ]);
 
         $response = $this->read();
+        dd($response);
         if (isset($response[0]) && strpos($response[0], '!done') === false) {
             throw new \Exception("Login failed.");
         }
@@ -67,6 +79,9 @@ class MikrotikClient
     {
         $this->sendWord($command);
         foreach ($attributes as $attribute) {
+            if (strpos($attribute, '=') === false) {
+                throw new \Exception("Formato de atributo no válido: $attribute");
+            }
             $this->sendWord($attribute);
         }
         fwrite($this->socket, chr(0));
@@ -88,7 +103,9 @@ class MikrotikClient
 
     private function sendWord($word)
     {
-        fwrite($this->socket, pack('N', strlen($word)) . $word);
+        $len = strlen($word);
+        fwrite($this->socket, chr($len));
+        fwrite($this->socket, $word);
     }
 
     private function readWord()
