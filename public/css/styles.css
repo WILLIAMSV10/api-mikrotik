@@ -392,3 +392,9 @@ main {
     color: white;
     /* margin-bottom: 20px; */
 }
+
+.area {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+}

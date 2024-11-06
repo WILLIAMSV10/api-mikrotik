@@ -16,19 +16,12 @@ class MikrotikController extends Controller
         $this->mikrotikService = $mikrotikService;
     }
 
-    public function getUsers()
-    {
-        $query = '/user/print';
-        $data = $this->mikrotikService->getData($query);
-
-        return view('mainMenu', ['datas' => $data]);
-    }
-
     public function getRouterData()
     {
         $query = '/interface/print'; // Un ejemplo de consulta para obtener interfaces
         $data = $this->mikrotikService->getData($query);
+        $userName = env('MIKROTIK_USER');
 
-        return response()->json($data);
+        return view('Admin', ['datas' => $data, 'userName' => $userName, 'action' => 'list']);
     }
 }

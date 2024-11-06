@@ -21,11 +21,18 @@
         </div>
         <ul class="nav-list">
             <li>
-                <a href="">
+                <a href="/api/mikrotik/users">
                     <i class="fa-solid fa-user"></i>
                     <span class="link_name">Usuarios</span>
                 </a>
                 <span class="tooltip">Usuarios</span>
+            </li>
+            <li>
+                <a href="/api/mikrotik/interfaces">
+                    <i class="fa-regular fa-hard-drive"></i>
+                    <span class="link_name">Interfaces</span>
+                </a>
+                <span class="tooltip">Interfaces</span>
             </li>
             <li>
                 <a href="">
@@ -47,27 +54,54 @@
 
     <section class="home-section">
         <main>
-            <div class="presentacion">
-                <div class="presContent">
-                    <p>Hola "Usuario"</p>
-                    <p>Bienvenido a tu server de Mikrotik</p>
-                    <p>Que deseas hacer hoy?</p>
-                    <p>Izi no Izi?</p>
-                </div>
-            </div>
-            @isset($datas)
-                @foreach ($datas as $data)
-                    <div class="container">
-                        <div class="content">
-                            <div class="text">
-                                @foreach ($data as $key => $value)
-                                    <p>{{ $key }}: {{ $value != '' ? $value : 'undefined' }}</p>
-                                @endforeach
-                            </div>
-                        </div>
+            @if ($action === 'list')
+                <div class="presentacion">
+                    <div class="presContent">
+                        <p>Hola {{ $userName ? $userName : 'Undefined' }}</p>
+                        <p>Bienvenido a tu server de Mikrotik</p>
+                        <p>Que deseas hacer hoy?</p>
+                        <p>Izi no Izi?</p>
                     </div>
-                @endforeach
-            @endisset
+                </div>
+                @isset($datas)
+                    <div class="container">
+                        @foreach ($datas as $data)
+                            <div class="content">
+                                <div class="text montserratFont">
+                                    @foreach ($data as $key => $value)
+                                        <p>{{ $key }}: {{ $value != '' ? $value : 'undefined' }}</p>
+                                    @endforeach
+                                    <form action="{{ route('mikrotik.user.edit', $data['.id']) }}" method="GET"><button type="submit">Editar</button></form>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endisset
+            @elseif ($action === 'edit')
+                <div class="area">
+                    @foreach ($fields as $field_type => $field_list)
+                        @if ($field_type === 'read_fields')
+                            @foreach ($field_list as $field)
+                                <p>{{ $field }}: {{ $data[$field] }}</p>
+                            @endforeach
+                        @elseif ($field_type === 'write_fields')
+                            @foreach ($field_list as $field)
+                                <label>{{ $field }}: </label>
+                                <input name={{ $field }} value="{{ $data[$field] }}">
+                            @endforeach
+                        @elseif ($field_type === 'option_fields')
+                            @foreach ($field_list as $field)
+                                <label>{{ $field }}: </label>
+                                <select name={{ $field }}>
+                                    <option value={{ $data[$field] }} {{ $data[$field] === $data[$field] ? 'selected' : '' }}>{{ $data[$field] }}</option>
+                                    <option>option1</option>
+                                    <option>option1</option>
+                                </select>
+                            @endforeach
+                        @endif
+                    @endforeach
+                </div>
+            @endif
         </main>
     </section>
 
