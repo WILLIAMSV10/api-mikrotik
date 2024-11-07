@@ -33,6 +33,18 @@ class MikrotikService
         return $this->client->query($query)->read()[0];
     }
 
+    public function createUser(array $data)
+    {
+        // Aquí puedes ajustar el comando según los requisitos de la API de MikroTik
+        $query = (new Query('/user/add'))
+            ->equal('name', $data['name'])
+            ->equal('password', $data['password'])
+            ->equal('group', $data['group'])
+            ->equal('comment', $data['comment'] ?? '');
+
+        return $this->client->query($query)->read();
+    }
+
     public function editUser($id, array $newData, $query)
     {
         // Crear la consulta para actualizar los datos del usuario

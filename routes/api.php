@@ -11,6 +11,12 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/mikrotik/interfaces', [MikrotikController::class, 'getRouterData']);
 
-Route::get('/mikrotik/users', [UserController::class, 'getUsers']);
+Route::get('/mikrotik/users', [UserController::class, 'getUsers'])->name('mikrotik.users');
 
 Route::get('/mikrotik/user/{id}/edit', [UserController::class, 'editUser'])->name('mikrotik.user.edit');
+
+Route::get('/mikrotik/user/new', [UserController::class, 'create'])->name('mikrotik.user.create');
+
+Route::post('/mikrotik/user/store', [UserController::class, 'store'])->name('mikrotik.user.store');
+
+Route::put('/mikrotik/user/{id}', [UserController::class, 'update'])->name('mikrotik.user.update');

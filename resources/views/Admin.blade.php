@@ -63,6 +63,7 @@
                         <p>Izi no Izi?</p>
                     </div>
                 </div>
+                <a href="{{ route('mikrotik.user.create') }}">Crear Nuevo</a>
                 @isset($datas)
                     <div class="container">
                         @foreach ($datas as $data)
@@ -79,27 +80,88 @@
                 @endisset
             @elseif ($action === 'edit')
                 <div class="area">
-                    @foreach ($fields as $field_type => $field_list)
-                        @if ($field_type === 'read_fields')
-                            @foreach ($field_list as $field)
-                                <p>{{ $field }}: {{ $data[$field] }}</p>
-                            @endforeach
-                        @elseif ($field_type === 'write_fields')
-                            @foreach ($field_list as $field)
-                                <label>{{ $field }}: </label>
-                                <input name={{ $field }} value="{{ $data[$field] }}">
-                            @endforeach
-                        @elseif ($field_type === 'option_fields')
-                            @foreach ($field_list as $field)
-                                <label>{{ $field }}: </label>
-                                <select name={{ $field }}>
-                                    <option value={{ $data[$field] }} {{ $data[$field] === $data[$field] ? 'selected' : '' }}>{{ $data[$field] }}</option>
-                                    <option>option1</option>
-                                    <option>option1</option>
-                                </select>
-                            @endforeach
+                    <form action="{{ route('mikrotik.user.update', $data['.id']) }}" method="POST">
+                        @csrf
+                        @method('PUT') <!-- Esto le indica a Laravel que debe tratar la solicitud como PUT -->
+                        @foreach ($fields as $field_type => $field_list)
+                            @if ($field_type === 'read_fields')
+                                @foreach ($field_list as $field)
+                                    <p>{{ $field }}: {{ isset($data[$field]) ? $data[$field] : 'undefined' }}</p>
+                                @endforeach
+                            @elseif ($field_type === 'write_fields')
+                                @foreach ($field_list as $field)
+                                    <label>{{ $field }}: </label>
+                                    <input name={{ $field }} value="{{ $data[$field] }}">
+                                @endforeach
+                            @elseif ($field_type === 'option_fields')
+                                @foreach ($field_list as $field)
+                                    @foreach ($relations as $relation_type => $relation_value)
+                                        @if ($relation_type === $field)
+                                            @php
+                                                $current_relation = [$relation_type => $relation_value];
+                                                $specific_relation = $current_relation[$field];
+                                            @endphp
+                                        @endif
+                                    @endforeach
+                                    <label>{{ $field }}: </label>
+                                    <select name={{ $field }}>
+                                        @foreach ($specific_relation as $rel)
+                                            <option value={{ $rel['name'] }} {{ $rel['name'] === $data[$field] ? 'selected' : '' }}>{{ $rel['name'] }}</option>
+                                        @endforeach
+                                    </select>
+                                @endforeach
+                            @elseif ($field_type === 'boolean_fields')
+                                @foreach ($field_list as $field)
+                                    <label>{{ $field }}</label>
+                                    <select name={{ $field }}>
+                                        <option value="true" {{ $data[$field] === 'true' ? 'selected' : '' }}>true</option>
+                                        <option value="false" {{ $data[$field] === 'false' ? 'selected' : '' }}>false</option>
+                                    </select>
+                                @endforeach
+                            @endif
+                        @endforeach
+                        <button type="submit">Save Changes</button>
+                        @if (session('mensaje'))
+                            <div class="alert alert-danger">
+                                {{ session('mensaje') }}
+                            </div>
                         @endif
-                    @endforeach
+                    </form>
+                </div>
+            @elseif ($action === 'create')
+                <div class="area">
+                    <form action="{{ route('mikrotik.user.store') }}" method="POST">
+                        @csrf
+                        @foreach ($fields as $field_type => $field_list)
+                            @if ($field_type === 'write_fields')
+                                @foreach ($field_list as $field)
+                                    <label>{{ $field }}: </label>
+                                    <input name={{ $field }}>
+                                @endforeach
+                            @endif
+                            @if ($field_type === 'option_fields')
+                                @foreach ($field_list as $field)
+                                    @foreach ($relations as $relation_type => $relation_value)
+                                        @if ($relation_type === $field)
+                                            @php
+                                                $current_relation = [$relation_type => $relation_value];
+                                                $specific_relation = $current_relation[$field];
+                                            @endphp
+                                        @endif
+                                    @endforeach
+                                    <label>{{ $field }}: </label>
+                                    <select name={{ $field }}>
+                                        @foreach ($specific_relation as $rel)
+                                            <option value={{ $rel['name'] }}>{{ $rel['name'] }}</option>
+                                        @endforeach
+                                    </select>
+                                @endforeach
+                            @endif
+                            @if ($field_type === 'boolean_fields')
+                            @endif
+                        @endforeach
+                        <button type="submit"> Crear</button>
+                    </form>
                 </div>
             @endif
         </main>
