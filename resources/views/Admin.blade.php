@@ -35,7 +35,7 @@
                 <span class="tooltip">Interfaces</span>
             </li>
             <li>
-                <a href="">
+                <a href="/api/mikrotik/address">
                     <i class="fa-solid fa-globe"></i>
                     <span class="link_name">ip</span>
                 </a>
@@ -63,7 +63,7 @@
                         <p>Izi no Izi?</p>
                     </div>
                 </div>
-                <a href="{{ route('mikrotik.user.create') }}">Crear Nuevo</a>
+                <a href="{{ route('mikrotik.' . $entity . '.create') }}">Crear Nuevo</a>
                 @isset($datas)
                     <div class="container">
                         @foreach ($datas as $data)
@@ -72,7 +72,7 @@
                                     @foreach ($data as $key => $value)
                                         <p>{{ $key }}: {{ $value != '' ? $value : 'undefined' }}</p>
                                     @endforeach
-                                    <form action="{{ route('mikrotik.user.edit', $data['.id']) }}" method="GET"><button type="submit">Editar</button></form>
+                                    <form action="{{ route('mikrotik.' . $entity . '.edit', $data['.id']) }}" method="GET"><button type="submit">Editar</button></form>
                                 </div>
                             </div>
                         @endforeach
@@ -80,7 +80,7 @@
                 @endisset
             @elseif ($action === 'edit')
                 <div class="area">
-                    <form action="{{ route('mikrotik.user.update', $data['.id']) }}" method="POST">
+                    <form action="{{ route('mikrotik.' . $entity . '.update', $data['.id']) }}" method="POST">
                         @csrf
                         @method('PUT') <!-- Esto le indica a Laravel que debe tratar la solicitud como PUT -->
                         @foreach ($fields as $field_type => $field_list)
@@ -112,7 +112,7 @@
                                 @endforeach
                             @elseif ($field_type === 'boolean_fields')
                                 @foreach ($field_list as $field)
-                                    <label>{{ $field }}</label>
+                                    <label>{{ $field }}: </label>
                                     <select name={{ $field }}>
                                         <option value="true" {{ $data[$field] === 'true' ? 'selected' : '' }}>true</option>
                                         <option value="false" {{ $data[$field] === 'false' ? 'selected' : '' }}>false</option>
@@ -130,7 +130,7 @@
                 </div>
             @elseif ($action === 'create')
                 <div class="area">
-                    <form action="{{ route('mikrotik.user.store') }}" method="POST">
+                    <form action="{{ route('mikrotik.' . $entity . '.store') }}" method="POST">
                         @csrf
                         @foreach ($fields as $field_type => $field_list)
                             @if ($field_type === 'write_fields')
@@ -158,6 +158,13 @@
                                 @endforeach
                             @endif
                             @if ($field_type === 'boolean_fields')
+                                @foreach ($field_list as $field)
+                                    <label>{{ $field }}: </label>
+                                    <select name={{ $field }}>
+                                        <option value=false>false</option>
+                                        <option value=true>true</option>
+                                    </select>
+                                @endforeach
                             @endif
                         @endforeach
                         <button type="submit"> Crear</button>

@@ -21,8 +21,9 @@ class UserController extends Controller
         $query = '/user/print';
         $data = $this->mikrotikService->getData($query);
         $userName = env('MIKROTIK_USER');
+        $entity = 'user';
 
-        return view('Admin', ['datas' => $data, 'userName' => $userName, 'action' => 'list']);
+        return view('Admin', ['datas' => $data, 'userName' => $userName, 'action' => 'list', 'entity' => $entity]);
     }
 
     public function create()
@@ -38,6 +39,7 @@ class UserController extends Controller
         return view(
             'Admin',
             [
+                'entity' => 'user',
                 'action' => 'create',
                 'fields' => $fields,
                 'relations' => $relations,
@@ -58,8 +60,8 @@ class UserController extends Controller
         $data = $request->only(['name', 'password', 'group', 'comment']);
 
         try {
-            $response = $this->mikrotikService->createUser($data);
-            return redirect()->route('mikrotik.user')->with('mensaje', 'Usuario creado exitosamente');
+            $response = $this->mikrotikService->create($data, '/user/add');
+            return redirect()->route('mikrotik.user.list')->with('mensaje', 'Usuario creado exitosamente');
         } catch (\Exception $e) {
             return redirect()->route('mikrotik.user.create')->with('mensaje', 'Error al crear el usuario: ' . $e->getMessage());
         }
@@ -103,6 +105,6 @@ class UserController extends Controller
         }
 
 
-        return redirect()->route('mikrotik.users', $id)->with('status', 'Usuario actualizado correctamente');
+        return redirect()->route('mikrotik.user.list', $id)->with('status', 'Usuario actualizado correctamente');
     }
 }
