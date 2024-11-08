@@ -35,7 +35,7 @@
                 <span class="tooltip">ip</span>
             </li>
             <li>
-                <a href="/plane_sections">
+                <a href="/api/mikrotik/queue">
                     <i class="fa-solid fa-wifi"></i>
                     <span class="link_name">Ancho de banda</span>
                 </a>

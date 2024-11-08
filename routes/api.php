@@ -4,6 +4,7 @@ use App\Http\Controllers\AddressController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MikrotikController;
+use App\Http\Controllers\QueueController;
 use App\Http\Controllers\UserController;
 
 Route::get('/user', function (Request $request) {
@@ -25,3 +26,10 @@ Route::get('/mikrotik/address/new', [AddressController::class, 'create'])->name(
 Route::get('/mikrotik/address/{id}/edit', [AddressController::class, 'edit'])->name('mikrotik.address.edit');
 Route::put('/mikrotik/address/{id}', [AddressController::class, 'update'])->name('mikrotik.address.update');
 Route::post('/mikrotik/address/store', [AddressController::class, 'store'])->name('mikrotik.address.store');
+
+//Rutas para ancho de banda
+Route::get('/mikrotik/queue', [QueueController::class, 'get'])->name('mikrotik.queue.list');
+Route::get('/mikrotik/queue/new', [QueueController::class, 'create'])->name('mikrotik.queue.create');
+Route::get('/mikrotik/queue/{id}/edit', [QueueController::class, 'edit'])->name('mikrotik.queue.edit');
+Route::post('/mikrotik/queue/store', [QueueController::class, 'store'])->name('mikrotik.queue.store');
+Route::put('/mikrotik/queue/{id}', [QueueController::class, 'update'])->name('mikrotik.queue.update');

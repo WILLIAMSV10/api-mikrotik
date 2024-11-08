@@ -62,6 +62,7 @@ class AddressController extends Controller
         if ($response == []) {
             return redirect()->route('mikrotik.address.list')->with('mensaje', 'Usuario creado exitosamente');
         } else {
+            dd($response);
             return redirect()->route('mikrotik.address.create')->with('mensaje', 'Error al crear el usuario: ');
         }
     }

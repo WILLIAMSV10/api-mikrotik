@@ -84,6 +84,7 @@ class UserController extends Controller
         return view(
             'Admin',
             [
+                'entity' => 'user',
                 'data' => $data,
                 'action' => 'edit',
                 'fields' => $fields,
