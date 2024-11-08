@@ -63,4 +63,12 @@ class MikrotikService
         // Ejecutar la consulta
         return $this->client->query($query)->read();
     }
+
+    public function deleteById($id, $query)
+    {
+        $query = (new Query($query))
+            ->equal('.id', $id);
+
+        return $this->client->query($query)->read();
+    }
 }

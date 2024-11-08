@@ -61,7 +61,7 @@ class QueueController extends Controller
 
         $response = $this->mikrotikService->create($data, '/queue/simple/add');
 
-        if ($response == []) {
+        if (isset($response['after']['ret'])) {
             return redirect()->route('mikrotik.queue.list')->with('mensaje', 'Usuario creado exitosamente');
         } else {
             return redirect()->route('mikrotik.queue.create')->with('mensaje', 'Error al crear el usuario: ');
@@ -102,12 +102,18 @@ class QueueController extends Controller
         $response = $this->mikrotikService->editUser($id, $data, $query);
 
         if ($response != []) {
-            dd($response);
             // Asegúrate de que $response esté definido antes de intentar acceder a él
             $message = isset($response['after']['message']) ? $response['after']['message'] : 'Error desconocido';
             return redirect()->route('mikrotik.address.edit', $id)->with('mensaje', $message);
         }
 
+
+        return redirect()->route('mikrotik.queue.list', $id)->with('status', 'Usuario actualizado correctamente');
+    }
+
+    public function delete($id)
+    {
+        $response = $this->mikrotikService->deleteById($id, '/queue/simple/remove');
 
         return redirect()->route('mikrotik.queue.list', $id)->with('status', 'Usuario actualizado correctamente');
     }

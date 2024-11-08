@@ -19,6 +19,8 @@ Route::get('/mikrotik/user/{id}/edit', [UserController::class, 'editUser'])->nam
 Route::get('/mikrotik/user/new', [UserController::class, 'create'])->name('mikrotik.user.create');
 Route::post('/mikrotik/user/store', [UserController::class, 'store'])->name('mikrotik.user.store');
 Route::put('/mikrotik/user/{id}', [UserController::class, 'update'])->name('mikrotik.user.update');
+Route::get('/mikrotik/user/{id}', [UserController::class, 'delete'])->name('mikrotik.user.delete');
+
 
 //Rutas para ip addresses
 Route::get('/mikrotik/address', [AddressController::class, 'get'])->name('mikrotik.address.list');
@@ -26,6 +28,8 @@ Route::get('/mikrotik/address/new', [AddressController::class, 'create'])->name(
 Route::get('/mikrotik/address/{id}/edit', [AddressController::class, 'edit'])->name('mikrotik.address.edit');
 Route::put('/mikrotik/address/{id}', [AddressController::class, 'update'])->name('mikrotik.address.update');
 Route::post('/mikrotik/address/store', [AddressController::class, 'store'])->name('mikrotik.address.store');
+Route::get('/mikrotik/address/{id}', [AddressController::class, 'delete'])->name('mikrotik.address.delete');
+
 
 //Rutas para ancho de banda
 Route::get('/mikrotik/queue', [QueueController::class, 'get'])->name('mikrotik.queue.list');
@@ -33,3 +37,4 @@ Route::get('/mikrotik/queue/new', [QueueController::class, 'create'])->name('mik
 Route::get('/mikrotik/queue/{id}/edit', [QueueController::class, 'edit'])->name('mikrotik.queue.edit');
 Route::post('/mikrotik/queue/store', [QueueController::class, 'store'])->name('mikrotik.queue.store');
 Route::put('/mikrotik/queue/{id}', [QueueController::class, 'update'])->name('mikrotik.queue.update');
+Route::get('/mikrotik/queue/{id}', [QueueController::class, 'delete'])->name('mikrotik.queue.delete');

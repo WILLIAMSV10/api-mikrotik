@@ -57,13 +57,12 @@ class UserController extends Controller
             'comment' => 'nullable|string|max:255',
         ]);
 
-        $data = $request->only(['name', 'password', 'group', 'comment']);
+        $response = $request->only(['name', 'password', 'group', 'comment']);
 
-        try {
-            $response = $this->mikrotikService->create($data, '/user/add');
+        if (isset($response['after']['ret'])) {
             return redirect()->route('mikrotik.user.list')->with('mensaje', 'Usuario creado exitosamente');
-        } catch (\Exception $e) {
-            return redirect()->route('mikrotik.user.create')->with('mensaje', 'Error al crear el usuario: ' . $e->getMessage());
+        } else {
+            return redirect()->route('mikrotik.user.create')->with('mensaje', 'Error al crear el usuario: ');
         }
     }
 
@@ -105,6 +104,12 @@ class UserController extends Controller
             return redirect()->route('mikrotik.user.edit', $id)->with('mensaje', $message);
         }
 
+
+        return redirect()->route('mikrotik.user.list', $id)->with('status', 'Usuario actualizado correctamente');
+    }
+    public function delete($id)
+    {
+        $response = $this->mikrotikService->deleteById($id, '/user/remove');
 
         return redirect()->route('mikrotik.user.list', $id)->with('status', 'Usuario actualizado correctamente');
     }

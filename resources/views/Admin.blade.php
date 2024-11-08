@@ -66,6 +66,7 @@
                                         <p>{{ $key }}: {{ $value != '' ? $value : 'undefined' }}</p>
                                     @endforeach
                                     <form action="{{ route('mikrotik.' . $entity . '.edit', $data['.id']) }}" method="GET"><button type="submit">Editar</button></form>
+                                    <form action="{{ route('mikrotik.' . $entity . '.delete', $data['.id']) }}" method="GET"><button type="submit">Eliminar</button></form>
                                 </div>
                             </div>
                         @endforeach
