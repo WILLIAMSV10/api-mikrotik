@@ -62,8 +62,7 @@ class AddressController extends Controller
         if ($response == []) {
             return redirect()->route('mikrotik.address.list')->with('mensaje', 'Usuario creado exitosamente');
         } else {
-            dd($response);
-            return redirect()->route('mikrotik.address.create')->with('mensaje', 'Error al crear el usuario: ' . $e->getMessage());
+            return redirect()->route('mikrotik.address.create')->with('mensaje', 'Error al crear el usuario: ');
         }
     }
 
@@ -101,6 +100,7 @@ class AddressController extends Controller
         $response = $this->mikrotikService->editUser($id, $data, $query);
 
         if ($response != []) {
+            dd($response);
             // Asegúrate de que $response esté definido antes de intentar acceder a él
             $message = isset($response['after']['message']) ? $response['after']['message'] : 'Error desconocido';
             return redirect()->route('mikrotik.address.edit', $id)->with('mensaje', $message);

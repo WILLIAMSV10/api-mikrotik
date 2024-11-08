@@ -28,13 +28,6 @@
                 <span class="tooltip">Usuarios</span>
             </li>
             <li>
-                <a href="/api/mikrotik/interfaces">
-                    <i class="fa-regular fa-hard-drive"></i>
-                    <span class="link_name">Interfaces</span>
-                </a>
-                <span class="tooltip">Interfaces</span>
-            </li>
-            <li>
                 <a href="/api/mikrotik/address">
                     <i class="fa-solid fa-globe"></i>
                     <span class="link_name">ip</span>
